@@ -1,0 +1,3 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFromation Template to create a DynamoDB table with EC2 instance and proper IAM role permissions.
+
