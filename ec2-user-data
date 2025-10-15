@@ -1,0 +1,9 @@
+#!/bin/bash
+# A Script to install AWs CLI on EC2 instance using user data
+
+# Update and Install Amazon AWS CLI
+sudo apt update
+sudo apt install unzip
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
