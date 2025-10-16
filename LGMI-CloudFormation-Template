@@ -1,3 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: CloudFromation Template to create a DynamoDB table with EC2 instance and proper IAM role permissions.
 
+Parameters:
+  KeyPairName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: EC2 Key Pair for SSH access
+    ConstraintDescription: Must be the name of an existing EC2 KeyPair
+
