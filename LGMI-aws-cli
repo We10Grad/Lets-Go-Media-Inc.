@@ -161,5 +161,16 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 sudo ./aws/install'
 
+# Output DynamoDB data into a table to read
+aws dynamodb scan --table-name MediaCatalog --output table
 
+# Test that role permissions are correct and EC2 can only read, not write
+aws dynamodb put-item \
+            --table-name MediaCatalog \
+            --item '{
+              "Title": {"S": "Test Movie"},
+              "ReleaseDate": {"S": "2025-01-01"},
+              "Genre": {"S": "Test"},
+              "Rating": {"N": "5.0"}
+            }' 
 
