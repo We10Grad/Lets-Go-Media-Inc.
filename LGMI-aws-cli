@@ -139,6 +139,10 @@ aws iam attach-role-policy \
     --role-name EC2DynamoDBReadRole \
     --policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess
 
+# Create the instance profile and add role to instance profile
+aws iam create-instance-profile \
+    --instance-profile-name EC2DynamoDBReadRole-Profile
+
 aws iam add-role-to-instance-profile \
     --instance-profile-name EC2DynamoDBReadRole-Profile \
     --role-name EC2DynamoDBReadRole
