@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: CloudFromation Template to create a DynamoDB table with EC2 instance and proper IAM role permissions.
+Description: 'CloudFormation template for Lets Go Media Inc. - DynamoDB MediaCatalog with EC2 read-only access'
 
 Parameters:
   KeyPairName:
@@ -7,3 +7,154 @@ Parameters:
     Description: EC2 Key Pair for SSH access
     ConstraintDescription: Must be the name of an existing EC2 KeyPair
 
+Resources:
+  # DynamoDB Table for Media Catalog
+  MediaCatalogTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: MediaCatalog
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: MovieId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: MovieId
+          KeyType: HASH
+      Tags:
+        - Key: Name
+          Value: MediaCatalog
+        - Key: Environment
+          Value: Production
+        - Key: Company
+          Value: LetsGoMedia
+
+  # IAM Role for EC2 Instance - Read-Only Access to DynamoDB
+  MediaCatalogEC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: MediaCatalog-EC2-ReadOnly-Role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      Policies:
+        - PolicyName: DynamoDBReadOnlyPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:Scan
+                  - dynamodb:Query
+                  - dynamodb:DescribeTable
+                Resource: !GetAtt MediaCatalogTable.Arn
+      Tags:
+        - Key: Name
+          Value: MediaCatalog-EC2-Role
+        - Key: Purpose
+          Value: DynamoDB-ReadOnly-Access
+
+  # Instance Profile for EC2
+  MediaCatalogInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: MediaCatalog-EC2-InstanceProfile
+      Roles:
+        - !Ref MediaCatalogEC2Role
+
+  # Security Group for EC2 Instance
+  MediaCatalogSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: MediaCatalog-EC2-SG
+      GroupDescription: Security group for MediaCatalog EC2 instance - SSH access only
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+          Description: SSH access from anywhere (restrict in production)
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic
+      Tags:
+        - Key: Name
+          Value: MediaCatalog-EC2-SG
+
+  # EC2 Instance
+  MediaCatalogEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0e86e20dae9224db8
+      IamInstanceProfile: !Ref MediaCatalogInstanceProfile
+      SecurityGroupIds:
+        - !Ref MediaCatalogSecurityGroup
+      KeyName: !Ref KeyPairName
+      UserData:
+        Fn::Base64: !Sub |
+         #!/bin/bash
+          # A Script to install AWS CLI on EC2 instance using user data
+
+          # Update and Install Amazon AWS CLI
+          sudo apt update -y
+          sudo apt install unzip -y
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      Tags:
+        - Key: Name
+          Value: MediaCatalog-EC2-Instance
+        - Key: Purpose
+          Value: DynamoDB-Access-Instance
+        - Key: Company
+          Value: LetsGoMedia
+
+Outputs:
+  DynamoDBTableName:
+    Description: Name of the DynamoDB table
+    Value: !Ref MediaCatalogTable
+    Export:
+      Name: MediaCatalog-TableName
+  
+  DynamoDBTableArn:
+    Description: ARN of the DynamoDB table
+    Value: !GetAtt MediaCatalogTable.Arn
+    Export:
+      Name: MediaCatalog-TableArn
+  
+  EC2InstanceId:
+    Description: Instance ID of the EC2 instance
+    Value: !Ref MediaCatalogEC2Instance
+    Export:
+      Name: MediaCatalog-EC2-InstanceId
+  
+  EC2PublicIP:
+    Description: Public IP address of the EC2 instance
+    Value: !GetAtt MediaCatalogEC2Instance.PublicIp
+    Export:
+      Name: MediaCatalog-EC2-PublicIP
+  
+  EC2PublicDNS:
+    Description: Public DNS name of the EC2 instance
+    Value: !GetAtt MediaCatalogEC2Instance.PublicDnsName
+    Export:
+      Name: MediaCatalog-EC2-PublicDNS
+  
+  IAMRoleName:
+    Description: Name of the IAM role attached to EC2
+    Value: !Ref MediaCatalogEC2Role
+    Export:
+      Name: MediaCatalog-IAM-RoleName
+  
+  SSHCommand:
+    Description: SSH command to connect to the instance
+    Value: !Sub 'ssh -i your-key.pem ubuntu@${MediaCatalogEC2Instance.PublicIp}'
