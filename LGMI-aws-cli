@@ -10,104 +10,111 @@ aws dynamodb create-table \
 aws dynamodb put-item \
     --table-name MediaCatalog \
     --item '{
-        "movieId": {"S": "movie001"},
+        "MovieId": {"S": "MOV001"},
         "Title": {"S": "Air Bud"},
         "Genre": {"S": "Family/Sport"},
-        "Release Date": {"S": "1997"},
+        "ReleaseDate": {"S": "1997"},
         "Rating": {"S": "PG"},
-        "IMDb score": {"N": "5.4"}
+        "IMDBScore": {"N": "5.4"}
     }'
 aws dynamodb put-item \
     --table-name MediaCatalog \
     --item '{
-        "movieId": {"S": "movie002"},
+        "MovieId": {"S": "MOV002"},
         "Title": {"S": "Space Jam"},
         "Genre": {"S": "Family/Sport"},
-        "Release Date": {"S": "1996"},
+        "ReleaseDate": {"S": "1996"},
         "Rating": {"S": "PG"},
-        "IMDb score": {"N": "6.5"}
-    }'
-aws dynamodb put-item \
-    --table-name MediaCatalog \
-    --item '{
-        "movieId": {"S": "movie003"},
-        "Title": {"S": "home Alone"},
-        "Genre": {"S": "Family/Comedy"},
-        "Release Date": {"S": "1990"},
-        "Rating": {"S": "PG"},
-        "IMDb score": {"N": "7.7"}
-    }'
-aws dynamodb put-item \
-    --table-name MediaCatalog \
-    --item '{
-        "movieId": {"S": "movie004"},
-        "Title": {"S": "The Sandlot"},
-        "Genre": {"S": "Family/Comedy"},
-        "Release Date": {"S": "1993"},
-        "Rating": {"S": "PG"},
-        "IMDb score": {"N": "7.8"}
-    }'
-aws dynamodb put-item \
-    --table-name MediaCatalog \
-    --item '{
-        "movieId": {"S": "movie005"},
-        "Title": {"S": "The Iron Giant"},
-        "Genre": {"S": "Family/Sci-fi"},
-        "Release Date": {"S": "1999"},
-        "Rating": {"S": "PG"},
-        "IMDb score": {"N": "8.1"}
-    }'
-aws dynamodb put-item \
-    --table-name MediaCatalog \
-    --item '{
-        "movieId": {"S": "movie006"},
-        "Title": {"S": "The Prince of Egypt"},
-        "Genre": {"S": "Family/Muical"},
-        "Release Date": {"S": "1998"},
-        "Rating": {"S": "PG"},
-        "IMDb score": {"N": "6.3"}
-    }'
-aws dynamodb put-item \
-    --table-name MediaCatalog \
-    --item '{
-        "movieId": {"S": "movie007"},
-        "Title": {"S": "Pokemon: the First Movie"},
-        "Genre": {"S": "Family/Adventure"},
-        "Release Date": {"S": "1998"},
-        "Rating": {"S": "G"},
-        "IMDb score": {"N": "6.3"}
-    }'
-aws dynamodb put-item \
-    --table-name MediaCatalog \
-    --item '{
-        "movieId": {"S": "movie008"},
-        "Title": {"S": "The Goofy Movie"},
-        "Genre": {"S": "Family/Comedy"},
-        "Release Date": {"S": "1995"},
-        "Rating": {"S": "G"},
-        "IMDb score": {"N": "7"}
-    }'
-aws dynamodb put-item \
-    --table-name MediaCatalog \
-    --item '{
-        "movieId": {"S": "movie009"},
-        "Title": {"S": "The Mighty Ducks"},
-        "Genre": {"S": "Family/Sport"},
-        "Release Date": {"S": "1992"},
-        "Rating": {"S": "PG"},
-        "IMDb score": {"N": "6.6"}
-    }'
-aws dynamodb put-item \
-    --table-name MediaCatalog \
-    --item '{
-        "movieId": {"S": "movie010"},
-        "Title": {"S": "The Land Before Time"},
-        "Genre": {"S": "Family/Adventure"},
-        "Release Date": {"S": "1988"},
-        "Rating": {"S": "G"},
-        "IMDb score": {"N": "7.4"}
+        "IMDBScore": {"N": "6.5"}
     }'
 
+aws dynamodb put-item \
+    --table-name MediaCatalog \
+    --item '{
+        "MovieId": {"S": "MOV003"},
+        "Title": {"S": "Home Alone"},
+        "Genre": {"S": "Family/Comedy"},
+        "ReleaseDate": {"S": "1993"},
+        "Rating": {"S": "PG"},
+        "IMDBScore": {"N": "7.7"}
+    }'
+
+aws dynamodb put-item \
+    --table-name MediaCatalog \
+    --item '{
+        "MovieId": {"S": "MOV004"},
+        "Title": {"S": "The Sandlot"},
+        "Genre": {"S": "Family/Comedy"},
+        "ReleaseDate": {"S": "1993"},
+        "Rating": {"S": "PG"},
+        "IMDBScore": {"N": "7.8"}
+    }'
+
+aws dynamodb put-item \
+    --table-name MediaCatalog \
+    --item '{
+        "MovieId": {"S": "MOV005"},
+        "Title": {"S": "The Iron Giant"},
+        "Genre": {"S": "Family/Sci-Fi"},
+        "ReleaseDate": {"S": "1999"},
+        "Rating": {"S": "PG"},
+        "IMDBScore": {"N": "8.1"}
+    }'
+
+aws dynamodb put-item \
+    --table-name MediaCatalog \
+    --item '{
+        "MovieId": {"S": "MOV006"},
+        "Title": {"S": "The Prince of Egypt"},
+        "Genre": {"S": "Family/Musical"},
+        "ReleaseDate": {"S": "1998"},
+        "Rating": {"S": "PG"},
+        "IMDBScore": {"N": "6.3"}
+    }'
+
+aws dynamodb put-item \
+    --table-name MediaCatalog \
+    --item '{
+        "MovieId": {"S": "MOV007"},
+        "Title": {"S": "Pokemon: The First Movie"},
+        "Genre": {"S": "Family/Adventure"},
+        "ReleaseDate": {"S": "1998"},
+        "Rating": {"S": "G"},
+        "IMDBScore": {"N": "6.3"}
+    }'
+
+aws dynamodb put-item \
+    --table-name MediaCatalog \
+    --item '{
+        "MovieId": {"S": "MOV008"},
+        "Title": {"S": "A Goofy Movie"},
+        "Genre": {"S": "Family/Comedy"},
+        "ReleaseDate": {"S": "1995"},
+        "Rating": {"S": "G"},
+        "IMDBScore": {"N": "7.0"}
+    }'
+
+aws dynamodb put-item \
+    --table-name MediaCatalog \
+    --item '{
+        "MovieId": {"S": "MOV009"},
+        "Title": {"S": "The Mighty Ducks"},
+        "Genre": {"S": "Family/Sport"},
+        "ReleaseDate": {"S": "1992"},
+        "Rating": {"S": "PG"},
+        "IMDBScore": {"N": "6.6"}
+    }'
+
+aws dynamodb put-item \
+    --table-name MediaCatalog \
+    --item '{
+        "MovieId": {"S": "MOV010"},
+        "Title": {"S": "The Land Before Time"},
+        "Genre": {"S": "Family/Adventure"},
+        "ReleaseDate": {"S": "1988"},
+        "Rating": {"S": "G"},
+        "IMDBScore": {"N": "7.4"}
+    }'
 # Create trust policy for EC2 instance
 nano trust-policy.json
 {                            #Write this Json policy into the trust-policy.json file
